@@ -13,14 +13,14 @@ struct Node* createNode(int data) {
     return newNode;
 }
 
-void insertAtEnd(struct Node* head, int data) {
-    struct Node* newNode = createNode();
+void insertAtEnd(struct Node** head, int data) {
+    struct Node* newNode = createNode(data);
     if (*head == NULL) {
         *head = newNode;
         newNode->next = *head; 
     } else {
         struct Node* temp = *head;
-        while (temp->next = *head) {
+        while (temp->next != *head) {
             temp = temp->next;
         }
         temp->next = newNode;
