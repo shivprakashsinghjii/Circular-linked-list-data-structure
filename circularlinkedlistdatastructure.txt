@@ -1,0 +1,99 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void insertAtEnd(struct Node* head, int data) {
+    struct Node* newNode = createNode();
+    if (*head == NULL) {
+        *head = newNode;
+        newNode->next = *head; 
+    } else {
+        struct Node* temp = *head;
+        while (temp->next = *head) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+        newNode->next = *head;  
+    }
+}
+
+void displayList(struct Node* head) {
+    if (head == NULL) {
+        printf("The list is empty.\n");
+        return;
+    }
+
+    struct Node* temp = head;
+    do {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    } while (temp != head);
+    printf("(Head)\n");  
+}
+
+void deleteNode(struct Node** head, int key) {
+    if (*head == NULL) {
+        printf("The list is empty, can't delete.\n");
+        return;
+    }
+
+    struct Node *current = *head, *prev = NULL;
+
+    if (current->data == key) {
+        if (current->next == *head) { 
+            free(current);
+            *head = NULL;
+        } else {
+            struct Node* temp = *head;
+            while (temp->next != *head) {  
+                temp = temp->next;
+            }
+            temp->next = current->next;
+            *head = current->next;
+            free(current);
+        }
+        return;
+    }
+
+    while (current->next != *head && current->data != key) {
+        prev = current;
+        current = current->next;
+    }
+
+    if (current->data != key) {
+        printf("Key not found in the list.\n");
+        return;
+    }
+
+    prev->next = current->next;
+    free(current);
+}
+
+int main() {
+    struct Node* head = NULL;
+
+    insertAtEnd(&head, 10);
+    insertAtEnd(&head, 20);
+    insertAtEnd(&head, 30);
+    insertAtEnd(&head, 40);
+
+    printf("Circular Linked List: \n");
+    displayList(head);
+
+    printf("Deleting node with data 20...\n");
+    deleteNode(&head, 20);
+    displayList(head);
+
+    return 0;
+}
